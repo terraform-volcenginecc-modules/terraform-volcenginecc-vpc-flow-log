@@ -1,88 +1,59 @@
 # terraform-volcenginecc-vpc-flow-log
 
-Terraform Module scaffold for the VolcengineCC provider.
+## 1. Overview
 
-> Status: Scaffold only. The Terraform implementation for this repository is
-> not available yet, and this repository is not ready for production use.
+Terraform module for managing Volcengine VPC FLOW LOG resources with the `volcenginecc` provider. The caller owns provider authentication, region configuration, and external resources passed by ID. The module manages only Flow Logs; the examples additionally create their Log Service project, topic, index, and optional TOS delivery.
 
-## Overview
+## 2. Usage
 
-This repository reserves the module name `volcengine/vpc-flow-log/volcenginecc`.
+```hcl
+module "vpc_flow_log" {
+  source  = "terraform-volcenginecc-modules/vpc-flow-log/volcenginecc"
+  version = "~> 1.0"
 
-The module is intended to provide a reusable Terraform abstraction for the
-`vpc-flow-log` scenario using the `volcengine/volcenginecc` provider.
+  # Set the required module inputs for your environment.
+}
+```
 
-Current scope:
+## 3. Examples
 
-- Repository and module scaffold only.
-- No Terraform resources or data sources are currently managed.
-- No production-readiness or real-cloud validation claim is made.
+- `basic`: independently runnable basic configuration.
+- `complete`: independently runnable complete configuration.
 
-## Usage
-
-The module implementation is not available yet. A runnable configuration will
-be added together with the first implementation release.
-
-Provider authentication and region configuration must be supplied by the
-caller. Do not commit credentials, access keys, secrets, Terraform state, or
-plan files.
-
-## Examples
-
-Examples will be added when the module implementation is available.
-
-Planned examples:
-
-- `examples/basic`
-- `examples/complete`
-
-## Requirements
+## 4. Requirements
 
 | Name | Version |
 |---|---|
-| Terraform | To be defined with the first implementation |
-| `volcengine/volcenginecc` | To be defined with the first implementation |
+| Terraform | `>= 1.5.7` |
+| OpenTofu | `>= 1.11.8` |
 
-## Providers
+## 5. Providers
 
 | Name | Source |
 |---|---|
 | `volcenginecc` | `volcengine/volcenginecc` |
 
-## Resources
+## 6. Resources
 
-No resources or data sources are currently managed.
+| Name | Description |
+|---|---|
+| `volcenginecc_vpc_flow_log` | Module-defined volcenginecc_vpc_flow_log. |
 
-The resource inventory will be documented before the first release.
+## 7. Inputs
 
-## Inputs
+| Name | Description |
+|---|---|
+| `flow_logs` | Module-defined flow_logs. |
 
-No input variables are currently defined.
+## 8. Outputs
 
-All inputs will document their type, default value, required status,
-validation, ownership, and replacement behavior when implemented.
+| Name | Description |
+|---|---|
+| `flow_log_ids` | Module-defined flow_log_ids. |
+| `flow_logs` | Flow Log IDs, names, targets, status, traffic type, and stable provider metadata keyed by `flow_logs` keys. |
 
-## Outputs
+## 9. Notes
 
-No outputs are currently defined.
-
-Outputs will document their exact semantics when implemented.
-
-## Notes
-
-- This repository is currently a scaffold and is not a publishable functional
-  module.
-- Real-cloud validation has not been performed.
-- Provider limitations and unsupported scenarios will be documented before
-  release.
-- Resource ownership, import behavior, replacement behavior, cost risks, and
-  cleanup procedures must be documented before the first release.
-
-## Security
-
-Please report security issues according to the [Security Policy](SECURITY.md).
-Do not disclose security vulnerabilities through public issues.
-
-## License
-
-This project is licensed under the MIT License. See [LICENSE](LICENSE).
+- Configure credentials using supported provider mechanisms; do not put access keys in module files.
+- Review replacement behavior and provider constraints before applying changes.
+- `flow_logs` excludes the provider's volatile computed `updated_at` timestamp. Use resource metadata other than update time for downstream automation.
